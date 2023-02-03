@@ -1,0 +1,2 @@
+
+traer todos los proveedores que traiga los id del proveedor el ruc del proveedor y la razon social.

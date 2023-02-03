@@ -1,0 +1,1 @@
+(@Param("idProveedor")Integer idProveedor,@Param("ruc") String ruc,@Param("razonSocial") String razonSocial

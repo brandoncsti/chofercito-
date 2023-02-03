@@ -1,0 +1,31 @@
+{
+  "carreta": {
+    "id": 1
+  
+  },
+  "chofer": {
+    "id": 1 
+  },
+  "detalleTicketList": [
+    {
+      "cod_balanza": "Balanza011",
+      "estadod": {
+        "id": 2
+      },
+      "fechaCreacion": "2023-01-26",  
+      "peso_bruto": 10.5,
+      "peso_neto": 10.5,
+      "posicion": 1,
+      "tipoPesaje": "BPesaje1",
+      "tipo_peso": "kg"
+    }
+  ],
+  "estado": {
+    "id": 2
+  },
+  "fechaCreacion": "2023-01-26",
+  "transporte": {
+    "id": 1
+  },
+  "unidadMedida": "kg"
+}
