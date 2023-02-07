@@ -75,6 +75,7 @@ public class TicketPesajeRest {
     @RequestMapping(value = "SaveorUpdate", method = RequestMethod.POST, produces =
             {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public TicketPesaje save(@RequestBody TicketPesaje ticketPesaje) {
+
         return ticketPesajeService.save(ticketPesaje);
     }
 
