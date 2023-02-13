@@ -20,9 +20,9 @@ public class ImprimirRest {
 
     Impresion impresions = new Impresion();
 
-
-    @RequestMapping(value = "/impresion-doc", method = RequestMethod.POST)
-    public ResponseEntity<String> Imprimir(){
+/**
+    //@RequestMapping(value = "/impresion-doc", method = RequestMethod.POST)
+    public ResponseEntity<//String> Imprimir(){
 
         try {
             impresions.imprimirDirecto("C:\\Users\\Usuario\\Downloads\\cr7.png",0);
@@ -32,4 +32,6 @@ public class ImprimirRest {
         }
 
     }
+
+    **/
 }
