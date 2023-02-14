@@ -5,7 +5,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
-import java.io.FileInputStream;
+import java.io.*;
 
 import javax.print.*;
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -13,56 +13,71 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
 import java.io.FileInputStream;
+
 public class Impresionsftp {
 
-    public void sessionSFTP(String nameArchive){
+    public String LecuraSFTP() {
 
-        String  urls = null;
-        String localPath="/Users/Usuario/Desktop/sftp-testing";
-        String fileName = nameArchive+".png";
-        String sftpPath="/public_html";
-        String sftpHost="files.000webhost.com";
-        String sftpPort ="21";
-        String sftpUser="portafoliobruce";
-        String sftpPassword="MARVEL123b";
+        String localPath = "C:\\Users\\Usuario\\Desktop\\sftp-testing";
+        String fileName = "impresion.txt";
+        String sftpPath = "/";
+        String sftpHost = "localhost";
+        String sftpPort = "22";
+        String sftpUser = "csti";
+        String sftpPassword = "MARVEL123b";
 
-        //conection
+        //Usuario: sftpcope
+        //Clave:   S3t%$&p30"/
 
-        try{
-            /**
-             * Open session to sftp server
-             */
+        String contenido = null;
+        try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(sftpUser, sftpHost, Integer.valueOf(sftpPort));
             session.setConfig("StrictHostKeyChecking", "no");
             session.setPassword(sftpPassword);
+            System.out.println("Connecting------");
             session.connect();
-
-            System.out.println("Session exitosa");
+            System.out.println("Established Session");
 
             Channel channel = session.openChannel("sftp");
             ChannelSftp sftpChannel = (ChannelSftp) channel;
             sftpChannel.connect();
 
+            //System.out.println("Opened sftp Channel");
+            /// imprimir el contido
+            /// sftp local
+            /**
+             * Do everything you need in sftp
+             */
+            //System.out.println("Copying file to Host");
 
+            InputStream stream = sftpChannel.get(sftpPath + "/" + fileName);
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                // SE RECORRE EL ARCHIVO PARA LEER CADA PARRAFO
+                String line;
+                while ((line = br.readLine()) != null) {
+                    //System.out.println(line);
 
+                    contenido = line;
 
-            sftpChannel.get(sftpPath+"/"+fileName, localPath);
+                }
 
-            imprimirDirecto("",0);
-
-            System.out.println();
+            } catch (Exception e) {
+                System.out.println("error " + e.getMessage());
+                e.getMessage();
+            }
 
             sftpChannel.disconnect();
             session.disconnect();
 
+            System.out.println("Disconnected from sftp");
 
-
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-
+        return contenido;
     }
 
     public  static void imprimirDirecto(String url, int i) {

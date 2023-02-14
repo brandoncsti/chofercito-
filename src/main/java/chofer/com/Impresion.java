@@ -9,24 +9,27 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.MediaSizeName;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Impresion {
 
     public  static  void main(String[] args) {
 
-        String localPath="/Users/Usuario/Desktop/sftp-testing";
-        String fileName = "prueba";
-        String sftpPath="/public_html";
-        String sftpHost="files.000webhost.com";
-        String sftpPort ="21";
-        String sftpUser="portafoliobruce";
-        String sftpPassword="MARVEL123m";
+        String localPath="C:\\Users\\Usuario\\Desktop\\sftp-testing";
+        String fileName = "impresion.txt";
+        String sftpPath="/";
+        String sftpHost="localhost";
+        String sftpPort ="22";
+        String sftpUser="csti";
+        String sftpPassword="MARVEL123b";
+
+        //Usuario: sftpcope
+        //Clave:   S3t%$&p30"/
 
         try{
-            /**
-             * Open session to sftp server
-             */
             JSch jsch = new JSch();
             Session session = jsch.getSession(sftpUser, sftpHost, Integer.valueOf(sftpPort));
             session.setConfig("StrictHostKeyChecking", "no");
@@ -39,16 +42,26 @@ public class Impresion {
             ChannelSftp sftpChannel = (ChannelSftp) channel;
             sftpChannel.connect();
 
-            System.out.println("Opened sftp Channel");
-
+            //System.out.println("Opened sftp Channel");
+            /// imprimir el contido
+            /// sftp local
             /**
              * Do everything you need in sftp
              */
-            System.out.println("Copying file to Host");
-            sftpChannel.put(localPath+"/"+fileName, sftpPath);
-            System.out.println("Copied file to Host");
+            //System.out.println("Copying file to Host");
 
-
+            InputStream stream =  sftpChannel.get(sftpPath+"/"+fileName);
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+                // SE RECORRE EL ARCHIVO PARA LEER CADA PARRAFO
+                String line;
+                while ((line = br.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }catch (Exception e) {
+                System.out.println("error " + e.getMessage());
+                e.getMessage();
+            }
 
             sftpChannel.disconnect();
             session.disconnect();
