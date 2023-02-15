@@ -18,13 +18,13 @@ public class Impresionsftp {
 
     public String LecuraSFTP() {
 
-        String localPath = "C:\\Users\\Usuario\\Desktop\\sftp-testing";
-        String fileName = "impresion.txt";
+        //String localPath = "C:\\Users\\Usuario\\Desktop\\sftp-testing";
+        String fileName = "prueba.txt";
         String sftpPath = "/";
-        String sftpHost = "localhost";
-        String sftpPort = "22";
-        String sftpUser = "csti";
-        String sftpPassword = "MARVEL123b";
+        String sftpHost = "200.41.106.103";
+        String sftpPort = "2222";
+        String sftpUser = "sftpcope";
+        String sftpPassword = "S3t%$&p30\"/";
 
         //Usuario: sftpcope
         //Clave:   S3t%$&p30"/
@@ -57,9 +57,8 @@ public class Impresionsftp {
                 // SE RECORRE EL ARCHIVO PARA LEER CADA PARRAFO
                 String line;
                 while ((line = br.readLine()) != null) {
-                    //System.out.println(line);
-
-                    contenido = line;
+                    //contenido = line;
+                    contenido= line;
 
                 }
 
@@ -76,20 +75,20 @@ public class Impresionsftp {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        imprimirDirecto(contenido,0);
         return contenido;
     }
 
-    public  static void imprimirDirecto(String url, int i) {
-        FileInputStream archivo;
+    public  static void imprimirDirecto(String contenido, int i) {
+
 
         // logger.error("mis parametror url: {}",url);
         //logger.error("mis parametror i: {}",i);
         try {
             //el archivo debe estar en la dirección del campo url
-            archivo =new FileInputStream(url);
-            DocFlavor formato = DocFlavor.INPUT_STREAM.PNG;
-            Doc documento = new SimpleDoc(archivo, formato, null);
+
+            DocFlavor formato = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
+            Doc documento = new SimpleDoc(contenido, formato, null);
             PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
 
             //Configuración de la impresora
