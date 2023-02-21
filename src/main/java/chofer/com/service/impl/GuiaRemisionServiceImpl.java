@@ -5,6 +5,7 @@ import chofer.com.repository.GuiaRemisionRepository;
 import chofer.com.service.GuiaRemisionService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class GuiaRemisionServiceImpl implements GuiaRemisionService {
 
     @Override
     public String getAllGuiaRemisionPDF(String formato) throws FileNotFoundException, JRException {
+
        List<GuiaRemision> guiaRemision =guiaRemisionRepository.findAll();
 
        File  file = ResourceUtils.getFile("classpath:GuiaRemision.jrxml");
@@ -67,12 +69,14 @@ public class GuiaRemisionServiceImpl implements GuiaRemisionService {
         Map<String, Object> map = new HashMap<>();
         map.put("createdBy","TITLE");
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,map,dataSource);
+        if(formato.equalsIgnoreCase("pdf")){
+            JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\Usuario\\Desktop\\sftp-testing"+"\\GuiaRemision.pdf");
+            //JasperExportManager.exportReportToPdfStream(jasperPrint);
+        }
         if(formato.equalsIgnoreCase("html")){
             JasperExportManager.exportReportToHtmlFile(jasperPrint,"C:\\Users\\Usuario\\Desktop\\sftp-testing"+"\\GuiaRemision.html");
         }
-        if(formato.equalsIgnoreCase("pdf")){
-            JasperExportManager.exportReportToHtmlFile(jasperPrint,"C:\\Users\\Usuario\\Desktop\\sftp-testing"+"\\GuiaRemision.pdf");
-        }
+
         return "reporte generado";
     }
 
