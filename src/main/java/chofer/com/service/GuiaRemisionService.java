@@ -4,7 +4,9 @@ package chofer.com.service;
 
 
 import chofer.com.model.GuiaRemision;
+import net.sf.jasperreports.engine.JRException;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface GuiaRemisionService {
@@ -13,6 +15,8 @@ public interface GuiaRemisionService {
     GuiaRemision save(GuiaRemision guiaRemision);
 
 
+
+    String getAllGuiaRemisionPDF(String formato) throws FileNotFoundException, JRException;
     //Proveedor getProveedorByProveedorandRucandSocial(Integer idProveedor, String ruc, String razonSocial);
     //List<TicketPesaje>getTicketPesajeListPorFechas(Date fechaInicio, Date fechaFin);
    // List<Proveedor> getProveedorByProveedorandRucandSocial(FiltroProveedorDTO filtro);
