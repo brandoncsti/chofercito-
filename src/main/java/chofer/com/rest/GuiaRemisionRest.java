@@ -3,7 +3,9 @@ package chofer.com.rest;
 
 import chofer.com.model.GuiaRemision;
 import chofer.com.service.GuiaRemisionService;
+import io.swagger.annotations.ApiOperation;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,16 +59,6 @@ public class GuiaRemisionRest {
         return this.guiaRemisionService.save(guiaRemision);
     }
 
-    @RequestMapping(value = "DescargarPDF/{formato}", method = RequestMethod.GET)
-    public String generarPdf(@PathVariable("formato") String formato){
-        try {
-            return guiaRemisionService.getAllGuiaRemisionPDF(formato);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (JRException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
 
    /* @GetMapping(value = "/getBuscarProveedor/{idProveedor}/{ruc}/{razonSocial}")

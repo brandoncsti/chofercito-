@@ -7,6 +7,10 @@ import chofer.com.model.TicketPesaje;
 import chofer.com.service.TicketPesajeService;
 
 
+import io.swagger.annotations.ApiOperation;
+import net.sf.jasperreports.engine.JRException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -16,18 +20,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.Date;
-import java.util.List;
-
-import java.util.Map;
-import java.util.Optional;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/ticketPesaje")
 public class TicketPesajeRest {
 
 
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private TicketPesajeService ticketPesajeService;
 
@@ -97,6 +98,27 @@ public class TicketPesajeRest {
         }
     }
 
+
+    @ApiOperation(value = "Genera pdf", produces = "application/pdf")
+    @RequestMapping(value = "DescargarPDF", method = RequestMethod.GET
+            ,produces = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
+    public ResponseEntity<?> generarPdf(){
+
+        try {
+            byte[] bytesx = null;
+            bytesx = ticketPesajeService.getAllTicketPDF();
+//                    workOrder.setPathScpEcm(storageDocument.getPath());
+            logger.error("<--LOG_MC-->:BASE64:"+ Base64.getEncoder().encodeToString(bytesx));
+            String bsx= Base64.getEncoder().encodeToString(bytesx);
+
+            return new ResponseEntity<>(bsx, HttpStatus.OK);
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (JRException e) {
+            throw new RuntimeException(e);
+        }
+    }
     /*@RequestMapping(value = "/actualizar", method = RequestMethod.POST, produces =
             {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public TicketPesaje update(@RequestBody TicketPesaje ticketPesaje) {

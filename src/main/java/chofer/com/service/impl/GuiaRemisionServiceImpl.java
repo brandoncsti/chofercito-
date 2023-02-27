@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -58,27 +59,6 @@ public class GuiaRemisionServiceImpl implements GuiaRemisionService {
 
 
 
-    @Override
-    public String getAllGuiaRemisionPDF(String formato) throws FileNotFoundException, JRException {
-
-       List<GuiaRemision> guiaRemision =guiaRemisionRepository.findAll();
-
-       File  file = ResourceUtils.getFile("classpath:GuiaRemision.jrxml");
-       JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-       JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(guiaRemision);
-        Map<String, Object> map = new HashMap<>();
-        map.put("createdBy","TITLE");
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,map,dataSource);
-        if(formato.equalsIgnoreCase("pdf")){
-            JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\Usuario\\Desktop\\sftp-testing"+"\\GuiaRemision.pdf");
-            //JasperExportManager.exportReportToPdfStream(jasperPrint);
-        }
-        if(formato.equalsIgnoreCase("html")){
-            JasperExportManager.exportReportToHtmlFile(jasperPrint,"C:\\Users\\Usuario\\Desktop\\sftp-testing"+"\\GuiaRemision.html");
-        }
-
-        return "reporte generado";
-    }
 
 
 

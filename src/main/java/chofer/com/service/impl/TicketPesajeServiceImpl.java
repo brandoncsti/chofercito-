@@ -2,11 +2,16 @@ package chofer.com.service.impl;
 
 
 //import chofer.com.helpers.ValidarEdit;
+import chofer.com.model.Carreta;
 import chofer.com.model.DetalleTicket;
+import chofer.com.model.GuiaRemision;
 import chofer.com.model.TicketPesaje;
+import chofer.com.repository.CarretaRepository;
 import chofer.com.repository.DetalleTicketRepository;
 import chofer.com.repository.TicketPesajeRepository;
 import chofer.com.service.TicketPesajeService;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +20,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,7 +37,8 @@ public class TicketPesajeServiceImpl implements TicketPesajeService {
     @Autowired
     private TicketPesajeRepository ticketPesajeRepository;
 
-
+    @Autowired
+    private CarretaRepository carretaRepository;
     @Override
     public List<TicketPesaje> getAllTicketPesaje() {
 
@@ -139,6 +149,36 @@ public class TicketPesajeServiceImpl implements TicketPesajeService {
         });
         return ticketPesajeRepository.save(ticketPesaje);
     }
+
+    @Override
+    public byte[]  getAllTicketPDF() throws FileNotFoundException, JRException {
+
+
+        List<TicketPesaje> ticketPesaje = ticketPesajeRepository.findAll();
+
+        logger.error("ticketPesaje: {}",ticketPesaje);
+        //logger.error("ticketPesaje: {}",);
+
+        File file = ResourceUtils.getFile("classpath:upload/ticket.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(ticketPesaje);
+        Map<String, Object> map = new HashMap<>();
+        map.put("createdBy","TITLE");
+        logger.error("generanndo logger");
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,map,dataSource);
+
+        //JasperExportManager.exportReportToPdfFile(jasperPrint,"C:\\Users\\Usuario\\Downloads"+"\\GuiaRemision.pdf");
+        //JasperExportManager.exportReportToPdfStream(jasperPrint);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+
+
+
+        return outputStream.toByteArray();
+
+    }
+
 
 
 }

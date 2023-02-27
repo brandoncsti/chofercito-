@@ -16,7 +16,8 @@ public interface GuiaRemisionService {
 
 
 
-    String getAllGuiaRemisionPDF(String formato) throws FileNotFoundException, JRException;
+
+
     //Proveedor getProveedorByProveedorandRucandSocial(Integer idProveedor, String ruc, String razonSocial);
     //List<TicketPesaje>getTicketPesajeListPorFechas(Date fechaInicio, Date fechaFin);
    // List<Proveedor> getProveedorByProveedorandRucandSocial(FiltroProveedorDTO filtro);
